@@ -1,0 +1,24 @@
+{
+  "name": "gdrivepdfdownload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeniawhite/GDrivePDFDownload.git"
+  },
+  "author": "Evgeniy Belyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeniawhite/GDrivePDFDownload/issues"
+  },
+  "homepage": "https://github.com/jeniawhite/GDrivePDFDownload#readme",
+  "dependencies": {
+    "async-mutex": "^0.2.4",
+    "dotenv": "^8.2.0",
+    "googleapis": "^59.0.0"
+  }
+}
