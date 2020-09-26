@@ -32,20 +32,27 @@ const r_folder = `./${process.env.DEST}`;
                 });
                 if (!lesson.FOLDER.length) return;
                 console.log('LESSON:', lesson.FOLDER[0]);
-                const pdf = await drive.listFiles({
+                const pdfs = await drive.listFiles({
                     folder: lesson.FOLDER[0].id,
-                    // TODO: Once all file will follow convention use - RegExp(`[0-9][0-9][.]ДЗ[_]*`)
-                    match: RegExp(`[0-9][0-9][\._]ДЗ[\.|_]*`)
+                    // match: RegExp(`[0-9][0-9][\.]ДЗ[_]*`)
                 });
-                if (pdf.PDF.length) {
-                    console.log('PDF:', pdf.PDF[0]);
-                    const f_name = pdf.PDF[0].name;
-                    const cut = f_name.split('_')[2];
-                    const dest_folder = cut.replace(new RegExp('[0-9]'), '').replace(' ', '');
-                    await drive.getFile({
-                        id: pdf.PDF[0].id,
-                        path: `${r_folder}/${dest_folder}/${f_name}`
-                    })
+                if (pdfs.PDF.length) {
+                    return Promise.all(pdfs.PDF.map(async p => {
+                        console.log('PDF:', p);
+                        const f_name = p.name;
+                        let dest_folder;
+                        try {
+                            const cut = f_name.split('_')[2];
+                            dest_folder = cut.replace(new RegExp('[0-9]'), '').replace(' ', '');
+                        } catch (error) {
+                            console.error('PDF PARSE FAILED', p);
+                            dest_folder = 'ParseFailed'
+                        }
+                        await drive.getFile({
+                            id: p.id,
+                            path: `${r_folder}/${dest_folder}/${f_name}`
+                        });
+                    }));
                 }
             }));
         }));
